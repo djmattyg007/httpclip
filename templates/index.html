@@ -11,29 +11,43 @@
             height: 100%;
             margin: 0;
         }
+        body {
+            text-align: center;
+        }
         h1 {
             margin-top: 0;
         }
-        .box {
-            display: flex;
-            flex-flow: column;
-            height: 100%;
-            text-align: center;
+        section {
+            height: 60vh;
         }
-        .box header {
-            flex: 0 1 auto;
-        }
-        .box section {
-            flex: 1 1 auto;
-        }
-        .box footer {
-            flex: 0 1 55px;
+        footer {
+            height: 12vh;
             padding-bottom: 10px;
+        }
+        @media only screen and (min-height: 440px) {
+            section {
+                height: 70vh;
+            }
+        }
+        @media only screen and (min-width: 475px) and (min-height: 380px) {
+            section {
+                height: 66vh;
+            }
+        }
+        @media only screen and (min-width: 475px) and (min-height: 480px) {
+            section {
+                height: 71vh;
+            }
+        }
+        @media only screen and (min-height: 600px) {
+            section {
+                height: 74vh;
+            }
         }
         #text {
             display: block;
             width: 96%;
-            height: 94%;
+            height: 95%;
             margin-left: auto;
             margin-right: auto;
             box-sizing: border-box;
@@ -46,19 +60,17 @@
     </style>
 </head>
 <body>
-<div class="box">
-    <header>
-        <h1>httpclip</h1>
-    </header>
-    <section>
-        <textarea id="text"></textarea>
-    </section>
-    <footer>
-        <button type="button" id="local-copy">Copy Locally</button>
-        <button type="button" id="remote-copy">Copy to Remote</button>
-        <button type="button" id="remote-fetch">Fetch from Remote</button>
-    </footer>
-</div>
+<header>
+    <h1>httpclip</h1>
+</header>
+<section>
+    <textarea id="text"></textarea>
+</section>
+<footer>
+    <button type="button" id="local-copy">Copy Locally</button>
+    <button type="button" id="remote-copy">Copy to Remote</button>
+    <button type="button" id="remote-fetch">Fetch from Remote</button>
+</footer>
 <script type="text/javascript">
 (function() {
     if (window.fetch) {
