@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="referrer" content="no-referrer">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>httpclip</title>
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .box {
+            display: flex;
+            flex-flow: column;
+            height: 100%;
+            text-align: center;
+        }
+        .box header {
+            flex: 0 1 auto;
+        }
+        .box section {
+            flex: 1 1 auto;
+        }
+        .box footer {
+            flex: 0 1 55px;
+            padding-bottom: 10px;
+        }
+        #text {
+            display: block;
+            width: 96%;
+            height: 94%;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+            resize: none;
+        }
+        button {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <header>
+        <h1>httpclip</h1>
+    </header>
+    <section>
+        <textarea id="text"></textarea>
+    </section>
+    <footer>
+        <button type="button" id="local-copy">Copy Locally</button>
+        <button type="button" id="remote-copy">Copy to Remote</button>
+        <button type="button" id="remote-fetch">Fetch from Remote</button>
+    </footer>
+</div>
+<script type="text/javascript">
+(function() {
+    if (window.fetch) {
+        return;
+    }
+    var js = document.createElement("script");
+    js.type = "text/javascript";
+    js.src = "{{ url_for('static', filename='fetch-2.0.3.min.js') }}";
+    document.body.appendChild(js);
+})();
+</script>
+<script type="text/javascript">
+(function() {
+    var textObj = document.getElementById("text");
+    var fetchAvailable = (window.fetch ? true : false);
+
+    var copyLocally = function() {
+        textObj.select();
+        try {
+            var success = document.execCommand("copy");
+            var msg = success ? "Successfully" : "Unsuccessfully";
+            alert(msg + " copied the text");
+        } catch (err) {
+            alert("Cannot copy automatically");
+        }
+    };
+
+    var copyToRemote = function() {
+        if (fetchAvailable === false) {
+            alert("Please wait while AJAX library is loaded");
+            return;
+        }
+        var text = textObj.value;
+        fetch("{{ url_for('clipboard_set') }}", {
+            method: "POST",
+            body: text,
+            headers: new Headers({
+                "Content-type": "text/plain"
+            })
+        }).then(function(response) {
+            if (response.ok) {
+                alert("OK");
+            } else {
+                alert("An error occurred: " + response.statusText);
+            }
+        });
+    };
+
+    var fetchFromRemote = function() {
+        if (fetchAvailable === false) {
+            alert("Please wait while AJAX library is loaded");
+            return;
+        }
+        fetch("{{ url_for('clipboard_get') }}").then(function(response) {
+            if (response.ok) {
+                return response.text();
+            } else {
+                var err = new Error(response.statusText);
+                err.response = response;
+                throw err;
+            }
+        }).then(function(text) {
+            textObj.value = text;
+        }).catch(function(err) {
+            alert(err);
+        });
+    };
+
+    document.getElementById("local-copy").addEventListener("click", copyLocally);
+    document.getElementById("remote-copy").addEventListener("click", copyToRemote);
+    document.getElementById("remote-fetch").addEventListener("click", fetchFromRemote);
+
+    if (fetchAvailable === true) {
+        fetchFromRemote();
+    } else {
+        var checkFetch = function() {
+            if (window.fetch) {
+                fetchAvailable = true;
+                fetchFromRemote();
+            } else {
+                setTimeout(checkFetch, 500);
+            }
+        };
+        setTimeout(checkFetch, 500);
+    }
+})();
+</script>
+</body>
+</html>
