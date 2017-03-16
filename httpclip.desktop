@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=httpclip
+Comment=Clipboard access over HTTP
+Exec=/usr/bin/env HTTPCLIP_SETTINGS=$HOME/.config/httpclip.cfg /usr/bin/python3 /opt/httpclip/httpclip.py
+Terminal=false
+Categories=System;Utility;
+Keywords=clipboard;

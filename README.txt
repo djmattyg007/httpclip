@@ -1,7 +1,8 @@
 httpclip
 
-Httpclip is a simple, small Flask application that provides an API to your
-system's clipboard. It also provides a web interface for easy use of the API.
+This is a simple, small Flask application that provides an HTTP API to your
+system's clipboard. It also provides a built-in web interface for easy use of
+the API.
 
 Currently it relies on the xsel command line utility, as this was the only
 program I could find that could reliably persist the contents of the clipboard
@@ -18,6 +19,11 @@ this, you will need to create a configuration file following this format:
 You'll need to point the application at this file using the HTTPCLIP_SETTINGS
 environment variable. You can use this to configure other Flask configuration
 settings. See here for a full list: http://flask.pocoo.org/docs/latest/config/
+You can also define a custom log file and turn on verbose logging with the
+following settings:
+
+  HTTPCLIP_LOGFILE="/path/to/logfile.log"
+  HTTPCLIP_VERBOSELOGGING=True
 
 To run the application, use the following command:
 
