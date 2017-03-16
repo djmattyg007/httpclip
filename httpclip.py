@@ -28,6 +28,10 @@ def paste_text():
 app = Flask("httpclip")
 if os.environ.get("HTTPCLIP_SETTINGS"):
     app.config.from_envvar("HTTPCLIP_SETTINGS")
+if app.config.get("HTTPCLIP_LOGFILE", None):
+    from logging import WatchedFileHandler
+    app.logger.addHandler(WatchedFileHandler(app.config.get("HTTPCLIP_LOGFILE"), encoding="utf-8"))
+verbose_logging = app.config.get("HTTPCLIP_VERBOSELOGGING", False):
 
 @app.route("/", methods=["GET"])
 def index():
@@ -37,12 +41,19 @@ def index():
 
 @app.route("/clipboard/get", methods=["GET"])
 def clipboard_get():
-    response = make_response(paste_text(), 200)
+    text = paste_text()
+    if verbose_logging:
+        app.logger.debug("Text in clipboard", {"text": text})
+    response = make_response(text, 200)
     response.headers["Content-type"] = "text/plain"
     return response
 
 @app.route("/clipboard/set", methods=["POST"])
 def clipboard_set():
+    text = request.data.decode("utf-8")
+    copy_text(text)
+    if verbose_logging:
+        app.logger.debug("Text now in clipboard", {"text": text})
     copy_text(request.data.decode("utf-8"))
     response = make_response("", 200)
     response.headers["Content-type"] = "text/plain"
