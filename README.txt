@@ -8,6 +8,8 @@ Currently it relies on the xsel command line utility, as this was the only
 program I could find that could reliably persist the contents of the clipboard
 in the event that the httpclip process was terminated.
 
+You'll also need to install Flask yourself (which is its only dependency).
+
 
 The application defaults to only being available on the loopback device, and
 running on port 5000 (the defaults of the underlying Flask library). To change
