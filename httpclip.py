@@ -31,7 +31,7 @@ if os.environ.get("HTTPCLIP_SETTINGS"):
 if app.config.get("HTTPCLIP_LOGFILE", None):
     from logging import WatchedFileHandler
     app.logger.addHandler(WatchedFileHandler(app.config.get("HTTPCLIP_LOGFILE"), encoding="utf-8"))
-verbose_logging = app.config.get("HTTPCLIP_VERBOSELOGGING", False):
+verbose_logging = app.config.get("HTTPCLIP_VERBOSELOGGING", False)
 
 @app.route("/", methods=["GET"])
 def index():
