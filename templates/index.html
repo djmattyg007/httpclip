@@ -73,19 +73,7 @@
 </footer>
 <script type="text/javascript">
 (function() {
-    if (window.fetch) {
-        return;
-    }
-    var js = document.createElement("script");
-    js.type = "text/javascript";
-    js.src = "{{ url_for('static', filename='fetch-2.0.3.min.js') }}";
-    document.body.appendChild(js);
-})();
-</script>
-<script type="text/javascript">
-(function() {
     var textObj = document.getElementById("text");
-    var fetchAvailable = (window.fetch ? true : false);
 
     var copyLocally = function() {
         textObj.select();
@@ -99,10 +87,6 @@
     };
 
     var copyToRemote = function() {
-        if (fetchAvailable === false) {
-            alert("Please wait while AJAX library is loaded");
-            return;
-        }
         var text = textObj.value;
         fetch("{{ url_for('clipboard_set') }}", {
             method: "POST",
@@ -120,10 +104,6 @@
     };
 
     var fetchFromRemote = function() {
-        if (fetchAvailable === false) {
-            alert("Please wait while AJAX library is loaded");
-            return;
-        }
         fetch("{{ url_for('clipboard_get') }}").then(function(response) {
             if (response.ok) {
                 return response.text();
@@ -143,19 +123,7 @@
     document.getElementById("remote-copy").addEventListener("click", copyToRemote);
     document.getElementById("remote-fetch").addEventListener("click", fetchFromRemote);
 
-    if (fetchAvailable === true) {
-        fetchFromRemote();
-    } else {
-        var checkFetch = function() {
-            if (window.fetch) {
-                fetchAvailable = true;
-                fetchFromRemote();
-            } else {
-                setTimeout(checkFetch, 500);
-            }
-        };
-        setTimeout(checkFetch, 500);
-    }
+    fetchFromRemote();
 })();
 </script>
 </body>

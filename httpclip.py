@@ -33,13 +33,15 @@ if app.config.get("HTTPCLIP_LOGFILE", None):
     app.logger.addHandler(WatchedFileHandler(app.config.get("HTTPCLIP_LOGFILE"), encoding="utf-8"))
 verbose_logging = app.config.get("HTTPCLIP_VERBOSELOGGING", False)
 
-@app.route("/", methods=["GET"])
+
+@app.route("/", methods=("GET",))
 def index():
     response = make_response(render_template("index.html"), 200)
     response.headers["Content-type"] = "text/html"
     return response
 
-@app.route("/clipboard/get", methods=["GET"])
+
+@app.route("/clipboard/get", methods=("GET",))
 def clipboard_get():
     text = paste_text()
     if verbose_logging:
@@ -48,7 +50,8 @@ def clipboard_get():
     response.headers["Content-type"] = "text/plain"
     return response
 
-@app.route("/clipboard/set", methods=["POST"])
+
+@app.route("/clipboard/set", methods=("POST",))
 def clipboard_set():
     text = request.data.decode("utf-8")
     copy_text(text)

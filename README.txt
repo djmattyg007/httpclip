@@ -18,7 +18,10 @@ this, you will need to create a configuration file following this format:
 
 You'll need to point the application at this file using the HTTPCLIP_SETTINGS
 environment variable. You can use this to configure other Flask configuration
-settings. See here for a full list: http://flask.pocoo.org/docs/latest/config/
+settings. See here for a full list:
+
+https://flask.palletsprojects.com/en/1.1.x/config/
+
 You can also define a custom log file and turn on verbose logging with the
 following settings:
 
@@ -35,8 +38,7 @@ There are currently three HTTP endpoints provided by the application:
 
 Index ("/")
 This returns a webpage that lets you interact with the API using AJAX. It uses
-the new fetch API. If your browser does not support the fetch API, a polyfill
-will be loaded automatically.
+the browser's fetch HTTP API.
 
 Clipboard Get ("/clipboard/get")
 Returns a text/plain response with the current contents of the clipboard.
