@@ -45,7 +45,10 @@ def index():
 def clipboard_get():
     text = paste_text()
     if verbose_logging:
-        app.logger.debug("Text in clipboard", {"text": text})
+        if len(text) > 20:
+            app.logger.debug("Text in clipboard: {0}...".format(text[:20]))
+        else:
+            app.logger.debug("Text in clipboard: {0}".format(text)
     response = make_response(text, 200)
     response.headers["Content-type"] = "text/plain"
     return response
@@ -56,7 +59,10 @@ def clipboard_set():
     text = request.data.decode("utf-8")
     copy_text(text)
     if verbose_logging:
-        app.logger.debug("Text now in clipboard", {"text": text})
+        if len(text) > 20:
+            app.logger.debug("Text now in clipboard: {0}...".format(text[:20]))
+        else:
+            app.logger.debug("Text now in clipboard: {0}".format(text))
     copy_text(request.data.decode("utf-8"))
     response = make_response("", 200)
     response.headers["Content-type"] = "text/plain"
