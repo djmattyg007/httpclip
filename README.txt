@@ -49,5 +49,4 @@ Clipboard Set ("/clipboard/set")
 Post a text/plain request body to set the contents of the clipboard.
 
 
-This repository is MIT licensed. I own the copyright to all code except the
-fetch polyfill.
+This repository is MIT licensed.
