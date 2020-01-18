@@ -48,7 +48,7 @@ def clipboard_get():
         if len(text) > 20:
             app.logger.debug("Text in clipboard: {0}...".format(text[:20]))
         else:
-            app.logger.debug("Text in clipboard: {0}".format(text)
+            app.logger.debug("Text in clipboard: {0}".format(text))
     response = make_response(text, 200)
     response.headers["Content-type"] = "text/plain"
     return response
